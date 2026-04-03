@@ -18,7 +18,6 @@ export default function ExcelUpload() {
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
   const [viewData, setViewData] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -113,18 +112,25 @@ export default function ExcelUpload() {
   return (
     <div className="p-6 lg:p-10" data-testid="excel-upload-page">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="font-heading text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+      >
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-2">
           Excel Sync
         </h1>
-        <p className="text-slate-600 dark:text-slate-400">
+        <p className="text-slate-500 dark:text-slate-400">
           Upload your Excel or CSV files. We'll detect changes and trigger automations.
         </p>
-      </div>
+      </motion.div>
 
       {/* Upload Zone */}
-      <div
-        className={`drop-zone p-10 text-center mb-8 ${dragActive ? 'active' : ''}`}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className={`drop-zone p-12 text-center mb-8 ${dragActive ? 'active' : ''}`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
@@ -140,40 +146,40 @@ export default function ExcelUpload() {
         />
         <label htmlFor="file-upload" className="cursor-pointer">
           <div className="flex flex-col items-center">
-            <div className="w-16 h-16 rounded-2xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center mb-4">
-              <CloudArrowUp weight="duotone" className="w-8 h-8 text-primary-600 dark:text-primary-400" />
+            <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-6 shadow-lg">
+              <CloudArrowUp weight="fill" className="w-10 h-10 text-white" />
             </div>
-            <p className="text-lg font-medium text-slate-700 dark:text-slate-300 mb-2">
+            <p className="text-xl font-bold text-slate-700 dark:text-slate-200 mb-2">
               {uploading ? 'Uploading...' : 'Drop your file here'}
             </p>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">
+            <p className="text-slate-500 dark:text-slate-400 mb-4">
               or click to browse
             </p>
-            <p className="text-xs text-slate-400 dark:text-slate-500">
+            <p className="text-sm text-slate-400 dark:text-slate-500">
               Supports .xlsx, .xls, .csv
             </p>
           </div>
         </label>
         {uploading && (
-          <div className="mt-4">
-            <div className="w-48 h-2 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto overflow-hidden">
-              <div className="h-full bg-primary-500 rounded-full animate-pulse" style={{ width: '60%' }}></div>
+          <div className="mt-6">
+            <div className="w-64 h-2 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-indigo-500 to-violet-500 rounded-full animate-pulse" style={{ width: '60%' }}></div>
             </div>
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Messages */}
       {error && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 flex items-center gap-3"
+          className="mb-6 p-4 rounded-xl bg-red-50/80 dark:bg-red-900/20 border border-red-200/50 dark:border-red-800/50 flex items-center gap-3"
         >
-          <Warning weight="bold" className="w-5 h-5 text-red-600 dark:text-red-400" />
-          <span className="text-red-700 dark:text-red-400">{error}</span>
+          <Warning weight="bold" className="w-5 h-5 text-red-500" />
+          <span className="text-red-700 dark:text-red-400 font-medium">{error}</span>
           <button onClick={() => setError('')} className="ml-auto">
-            <X className="w-4 h-4 text-red-600 dark:text-red-400" />
+            <X className="w-4 h-4 text-red-500" />
           </button>
         </motion.div>
       )}
@@ -182,45 +188,52 @@ export default function ExcelUpload() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 p-4 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 flex items-center gap-3"
+          className="mb-6 p-4 rounded-xl bg-emerald-50/80 dark:bg-emerald-900/20 border border-emerald-200/50 dark:border-emerald-800/50 flex items-center gap-3"
         >
-          <Check weight="bold" className="w-5 h-5 text-green-600 dark:text-green-400" />
-          <span className="text-green-700 dark:text-green-400">{success}</span>
+          <Check weight="bold" className="w-5 h-5 text-emerald-500" />
+          <span className="text-emerald-700 dark:text-emerald-400 font-medium">{success}</span>
           <button onClick={() => setSuccess('')} className="ml-auto">
-            <X className="w-4 h-4 text-green-600 dark:text-green-400" />
+            <X className="w-4 h-4 text-emerald-500" />
           </button>
         </motion.div>
       )}
 
       {/* Files List */}
-      <div className="card">
-        <div className="p-4 border-b border-slate-200 dark:border-slate-700">
-          <h2 className="font-heading font-semibold text-slate-900 dark:text-white">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="card"
+      >
+        <div className="p-5 border-b border-slate-200/50 dark:border-slate-700/50">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white">
             Uploaded Files
           </h2>
         </div>
         
         {files.length === 0 ? (
-          <div className="p-10 text-center">
-            <FileXls weight="duotone" className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-            <p className="text-slate-500 dark:text-slate-400">No files uploaded yet</p>
+          <div className="p-16 text-center">
+            <div className="w-20 h-20 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-6">
+              <FileXls weight="duotone" className="w-10 h-10 text-slate-400" />
+            </div>
+            <p className="text-lg font-medium text-slate-500 dark:text-slate-400">No files uploaded yet</p>
             <p className="text-sm text-slate-400 dark:text-slate-500">Upload an Excel file to get started</p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-200 dark:divide-slate-700">
+          <div className="divide-y divide-slate-200/50 dark:divide-slate-700/50">
             {files.map((file) => (
               <div
                 key={file.file_id}
-                className="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                className="p-5 flex items-center justify-between hover:bg-white/50 dark:hover:bg-white/5 transition-colors"
                 data-testid={`excel-file-${file.file_id}`}
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                    <Table weight="duotone" className="w-5 h-5 text-green-600 dark:text-green-400" />
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg">
+                    <Table weight="fill" className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="font-medium text-slate-900 dark:text-white">{file.filename}</p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                    <p className="font-semibold text-slate-900 dark:text-white">{file.filename}</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
                       {file.row_count} rows · {file.columns?.length || 0} columns
                     </p>
                   </div>
@@ -228,59 +241,59 @@ export default function ExcelUpload() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleView(file.file_id)}
-                    className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                    className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                     data-testid={`view-file-${file.file_id}`}
                   >
-                    <Eye weight="regular" className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                    <Eye weight="duotone" className="w-5 h-5 text-slate-500" />
                   </button>
                   <button
                     onClick={() => handleDelete(file.file_id)}
-                    className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                    className="p-2.5 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                     data-testid={`delete-file-${file.file_id}`}
                   >
-                    <Trash weight="regular" className="w-5 h-5 text-red-600 dark:text-red-400" />
+                    <Trash weight="duotone" className="w-5 h-5 text-red-500" />
                   </button>
                 </div>
               </div>
             ))}
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Data Preview Modal */}
       {viewData && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={() => setViewData(null)}>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setViewData(null)}>
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white dark:bg-slate-900 rounded-2xl shadow-lifted max-w-4xl w-full max-h-[80vh] overflow-hidden"
+            className="glass-card-solid max-w-5xl w-full max-h-[85vh] overflow-hidden shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-              <h3 className="font-heading font-semibold text-slate-900 dark:text-white">
+            <div className="p-5 border-b border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                 {viewData.filename}
               </h3>
               <button
                 onClick={() => setViewData(null)}
-                className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800"
               >
-                <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <X className="w-5 h-5 text-slate-500" />
               </button>
             </div>
-            <div className="p-4 overflow-auto max-h-[calc(80vh-60px)]">
+            <div className="p-5 overflow-auto max-h-[calc(85vh-70px)]">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-slate-50 dark:bg-slate-800">
                     {viewData.columns?.map((col, i) => (
-                      <th key={i} className="px-4 py-3 text-left font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">
+                      <th key={i} className="px-4 py-3 text-left font-semibold text-slate-700 dark:text-slate-300 whitespace-nowrap">
                         {col}
                       </th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                <tbody className="divide-y divide-slate-200/50 dark:divide-slate-700/50">
                   {viewData.rows?.slice(0, 50).map((row, i) => (
-                    <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                    <tr key={i} className="hover:bg-slate-50/50 dark:hover:bg-slate-800/50">
                       {viewData.columns?.map((col, j) => (
                         <td key={j} className="px-4 py-3 text-slate-600 dark:text-slate-400 whitespace-nowrap">
                           {row[col] != null ? String(row[col]) : '-'}
@@ -291,7 +304,7 @@ export default function ExcelUpload() {
                 </tbody>
               </table>
               {viewData.rows?.length > 50 && (
-                <p className="text-center text-sm text-slate-500 dark:text-slate-400 mt-4">
+                <p className="text-center text-sm text-slate-500 dark:text-slate-400 mt-6 font-medium">
                   Showing first 50 of {viewData.rows.length} rows
                 </p>
               )}

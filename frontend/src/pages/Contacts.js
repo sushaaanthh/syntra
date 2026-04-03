@@ -106,11 +106,11 @@ export default function Contacts() {
 
   if (loading) {
     return (
-      <div className="p-6 lg:p-10 animate-pulse">
-        <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-48 mb-8"></div>
+      <div className="p-6 lg:p-10 space-y-6">
+        <div className="h-10 w-48 rounded-xl shimmer" />
         <div className="space-y-4">
           {[1, 2, 3].map(i => (
-            <div key={i} className="h-20 bg-slate-200 dark:bg-slate-700 rounded-2xl"></div>
+            <div key={i} className="h-24 rounded-2xl shimmer" />
           ))}
         </div>
       </div>
@@ -120,12 +120,16 @@ export default function Contacts() {
   return (
     <div className="p-6 lg:p-10" data-testid="contacts-page">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8"
+      >
         <div>
-          <h1 className="font-heading text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-2">
             Contacts
           </h1>
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="text-slate-500 dark:text-slate-400">
             Manage your leads and clients
           </p>
         </div>
@@ -137,10 +141,15 @@ export default function Contacts() {
           <Plus weight="bold" className="w-5 h-5 mr-2" />
           Add Contact
         </button>
-      </div>
+      </motion.div>
 
       {/* Search */}
-      <div className="relative mb-6">
+      <motion.div 
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+        className="relative mb-6"
+      >
         <MagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
         <input
           type="text"
@@ -150,63 +159,70 @@ export default function Contacts() {
           className="input pl-12"
           data-testid="contacts-search-input"
         />
-      </div>
+      </motion.div>
 
       {/* Contacts List */}
-      <div className="card">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="card"
+      >
         {filteredContacts.length === 0 ? (
-          <div className="p-10 text-center">
-            <Users weight="duotone" className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-            <p className="text-slate-500 dark:text-slate-400">
+          <div className="p-16 text-center">
+            <div className="w-20 h-20 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-6">
+              <Users weight="duotone" className="w-10 h-10 text-slate-400" />
+            </div>
+            <p className="text-lg font-medium text-slate-500 dark:text-slate-400">
               {search ? 'No contacts found' : 'No contacts yet'}
             </p>
             {!search && (
               <button
                 onClick={() => setShowModal(true)}
-                className="mt-4 text-primary-600 dark:text-primary-400 font-medium hover:underline"
+                className="mt-4 text-indigo-600 dark:text-indigo-400 font-semibold hover:underline"
               >
                 Add your first contact
               </button>
             )}
           </div>
         ) : (
-          <div className="divide-y divide-slate-200 dark:divide-slate-700">
+          <div className="divide-y divide-slate-200/50 dark:divide-slate-700/50">
             {filteredContacts.map((contact, index) => (
               <motion.div
                 key={contact.contact_id}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: index * 0.03 }}
-                className="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                className="p-5 flex items-center justify-between hover:bg-white/50 dark:hover:bg-white/5 transition-colors"
                 data-testid={`contact-${contact.contact_id}`}
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-semibold">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-500/20">
                     {contact.name?.charAt(0)?.toUpperCase() || '?'}
                   </div>
                   <div>
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium text-slate-900 dark:text-white">{contact.name}</p>
+                    <div className="flex items-center gap-3">
+                      <p className="font-semibold text-slate-900 dark:text-white">{contact.name}</p>
                       <span className={`badge ${statusBadges[contact.status] || 'badge-lead'}`}>
                         {contact.status}
                       </span>
                     </div>
-                    <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                    <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400 mt-1.5">
                       {contact.email && (
-                        <span className="flex items-center gap-1">
-                          <Envelope weight="regular" className="w-3.5 h-3.5" />
+                        <span className="flex items-center gap-1.5">
+                          <Envelope weight="duotone" className="w-4 h-4" />
                           {contact.email}
                         </span>
                       )}
                       {contact.phone && (
-                        <span className="flex items-center gap-1">
-                          <Phone weight="regular" className="w-3.5 h-3.5" />
+                        <span className="flex items-center gap-1.5">
+                          <Phone weight="duotone" className="w-4 h-4" />
                           {contact.phone}
                         </span>
                       )}
                       {contact.company && (
-                        <span className="flex items-center gap-1">
-                          <Buildings weight="regular" className="w-3.5 h-3.5" />
+                        <span className="flex items-center gap-1.5">
+                          <Buildings weight="duotone" className="w-4 h-4" />
                           {contact.company}
                         </span>
                       )}
@@ -216,45 +232,45 @@ export default function Contacts() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => openEditModal(contact)}
-                    className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+                    className="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
                     data-testid={`edit-contact-${contact.contact_id}`}
                   >
-                    <Pencil weight="regular" className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                    <Pencil weight="duotone" className="w-5 h-5 text-slate-500 dark:text-slate-400" />
                   </button>
                   <button
                     onClick={() => handleDelete(contact.contact_id)}
-                    className="p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                    className="p-2.5 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                     data-testid={`delete-contact-${contact.contact_id}`}
                   >
-                    <Trash weight="regular" className="w-5 h-5 text-red-600 dark:text-red-400" />
+                    <Trash weight="duotone" className="w-5 h-5 text-red-500" />
                   </button>
                 </div>
               </motion.div>
             ))}
           </div>
         )}
-      </div>
+      </motion.div>
 
       {/* Modal */}
       <AnimatePresence>
         {showModal && (
-          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={closeModal}>
+          <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={closeModal}>
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="bg-white dark:bg-slate-900 rounded-2xl shadow-lifted max-w-lg w-full"
+              className="glass-card-solid max-w-lg w-full shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
-                <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-white">
+              <div className="p-6 border-b border-slate-200/50 dark:border-slate-700/50 flex items-center justify-between">
+                <h3 className="text-xl font-bold text-slate-900 dark:text-white">
                   {editContact ? 'Edit Contact' : 'Add Contact'}
                 </h3>
-                <button onClick={closeModal} className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
-                  <X className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <button onClick={closeModal} className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                  <X className="w-5 h-5 text-slate-500" />
                 </button>
               </div>
-              <form onSubmit={handleSubmit} className="p-5 space-y-4">
+              <form onSubmit={handleSubmit} className="p-6 space-y-5">
                 <div>
                   <label className="label">Name *</label>
                   <input
@@ -322,12 +338,12 @@ export default function Contacts() {
                   <textarea
                     value={formData.notes}
                     onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                    className="input min-h-[80px]"
+                    className="input min-h-[100px]"
                     placeholder="Any notes about this contact..."
                     data-testid="contact-notes-input"
                   />
                 </div>
-                <div className="flex justify-end gap-3 pt-2">
+                <div className="flex justify-end gap-3 pt-4">
                   <button type="button" onClick={closeModal} className="btn-secondary">
                     Cancel
                   </button>
