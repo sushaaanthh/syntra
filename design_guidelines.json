@@ -1,0 +1,114 @@
+{
+  "project_name": "Syntra",
+  "theme": "Light / Dark (System Toggle)",
+  "archetype": "Archetype 4 (Swiss & High-Contrast) adapted for 'Soft Utility'",
+  "emotion_and_vibe": "Calm, premium, magical, invisible automation. High clarity with zero visual noise. Apple-level polish with Notion-like functional beauty.",
+  "colors": {
+    "light": {
+      "background": "#FAFAFA",
+      "surface": "#FFFFFF",
+      "primary": "#6366F1",
+      "secondary": "#22C55E",
+      "text_primary": "#0F172A",
+      "text_secondary": "#475569",
+      "border": "#E2E8F0"
+    },
+    "dark": {
+      "background": "#0B0B0F",
+      "surface": "#1F2937",
+      "primary": "#7C3AED",
+      "secondary": "#06B6D4",
+      "text_primary": "#E5E7EB",
+      "text_secondary": "#9CA3AF",
+      "border": "#374151"
+    },
+    "rules": [
+      "No full-screen heavy gradients. Use subtle radial glows for emphasis if needed.",
+      "Hover state color must be a lighter hue of the active state color. ALWAYS explicitly set text color on hover (e.g., hover:bg-slate-900 hover:text-white).",
+      "Never use pure black (#000000) or pure white (#FFFFFF) for borders. Always use semantic border colors like border-slate-200.",
+      "Ensure text meets APCA contrast standards. Dark mode surfaces must have subtle borders."
+    ]
+  },
+  "typography": {
+    "headings": {
+      "font": "Manrope",
+      "weights": ["600", "700", "800"],
+      "tracking": "tracking-tight"
+    },
+    "body": {
+      "font": "IBM Plex Sans",
+      "weights": ["400", "500"],
+      "tracking": "tracking-normal"
+    },
+    "rules": [
+      "BANNED FONTS: Inter, Roboto, Open Sans, Lato.",
+      "H1 Max size: text-4xl sm:text-5xl. Never exceed text-6xl for this context.",
+      "Overlines/Labels MUST be Uppercase + Tiny + Wide Spacing (tracking-[0.2em]).",
+      "Line Height: Tight (leading-none to leading-tight) for headers, Loose (leading-relaxed) for body.",
+      "Hierarchy Gap Rule: The jump between a heading and subheading must not exceed 2 Tailwind steps."
+    ]
+  },
+  "spacing_and_layout": {
+    "philosophy": "Generous Spacing. Use 2-3x more spacing than typical defaults to create breathing room.",
+    "scale": "p-6, p-8, p-12 for containers",
+    "bento_grid": "MODE B: THE CONTROL ROOM GRID for dashboards. Use gap-6 or gap-8. grid-cols-1 md:grid-cols-3 lg:grid-cols-4. Every pixel must be utilized, no jagged bottoms.",
+    "alignment": "Optical alignment over geometrical. Left-align dense content, forms, and tables. Center-align hero elements only.",
+    "corners": "rounded-2xl for main app containers, cards, and modals. rounded-lg or rounded-xl for inner elements like buttons and inputs."
+  },
+  "surface_strategies": {
+    "cards": "Subtle Neumorphism/Crisp. 1px solid border (border-border) with soft ambient shadows (shadow-sm) in light mode. In dark mode, rely on 1px border with no heavy shadow, just slight elevation.",
+    "headers": "Glassmorphism (Crystal variant). Light: bg-white/70 backdrop-blur-xl border-b border-slate-200/50. Dark: bg-[#0B0B0F]/60 backdrop-blur-xl border-b border-slate-800.",
+    "widgets": "Flat background, 1px subtle border. On hover: slight lift (-translate-y-1), subtle shadow (shadow-md)."
+  },
+  "components": {
+    "libraries_to_install": [
+      "@phosphor-icons/react",
+      "framer-motion",
+      "recharts",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "strategy": [
+      "Use Shadcn UI logic but heavily customize the look to remove the default 'Vercel' aesthetic.",
+      "Use Pure HTML/Tailwind for structural bento-grids rather than strict Shadcn Card wrappers if they constrain layout.",
+      "DO NOT use generic HTML <select> or <input type='date'>. Use custom Shadcn accessible variants.",
+      "Empty states: Do not use generic images. Use large Phosphor Icons (size 48 or 64) with soft secondary colors."
+    ]
+  },
+  "motion": {
+    "rules": [
+      "Minimalist micro-interactions for feedback (e.g., active states, button clicks).",
+      "Transition specific properties ONLY: transition: transform 0.2s ease, opacity 0.2s ease.",
+      "Implement staggered entrance animations for dashboard feed/list items.",
+      "MUST respect prefers-reduced-motion."
+    ]
+  },
+  "icons_and_assets": {
+    "icon_library": "@phosphor-icons/react",
+    "image_urls": {
+      "user_avatar_1": {
+        "url": "https://images.pexels.com/photos/7578251/pexels-photo-7578251.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Positive ethnic female entrepreneur avatar. Use for the primary user profile icon."
+      },
+      "user_avatar_2": {
+        "url": "https://images.unsplash.com/photo-1617332518455-bfd5a39476f1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjY2NzZ8MHwxfHNlYXJjaHwzfHxwcm9mZXNzaW9uYWwlMjBidXNpbmVzcyUyMHVzZXIlMjBhdmF0YXJ8ZW58MHx8fHwxNzc1MjI1OTQ5fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Professional man in suit avatar. Use for mock CRM contacts."
+      }
+    }
+  },
+  "testing": {
+    "rules": [
+      "CRITICAL: All interactive and key informational elements MUST include a data-testid attribute.",
+      "Format: kebab-case, role-based. Example: data-testid='upload-excel-button', data-testid='nav-settings-link', data-testid='automation-card-trigger'."
+    ]
+  },
+  "instructions_to_main_agent": [
+    "1. Setup fonts immediately in index.html or global css: Google Fonts for Manrope (Headings) and IBM Plex Sans (Body).",
+    "2. Implement the color variables perfectly matching the user's hex codes in tailwind.config.js.",
+    "3. Build the Dashboard layout using the Mode B Grid Strategy (grid-cols-1 md:grid-cols-4) to create a dense but highly breathable 'Control Room' feel.",
+    "4. Apply 'Crystal Glass' styles to floating headers or sticky navigation, ensuring content behind it is beautifully blurred (backdrop-blur-xl).",
+    "5. For the Excel File Upload and Automation Builder: Avoid cluttered UI. Keep it to a pristine, 3-step visible flow with generous padding.",
+    "6. Do not use placehold.it or dummyimage.com anywhere. Use the provided avatar URLs.",
+    "7. Include dark mode toggle functionality out of the box."
+  ]
+}
