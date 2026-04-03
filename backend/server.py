@@ -51,7 +51,7 @@ def create_access_token(user_id: str, email: str) -> str:
     payload = {
         "sub": user_id,
         "email": email,
-        "exp": datetime.now(timezone.utc) + timedelta(minutes=15),
+        "exp": datetime.now(timezone.utc) + timedelta(hours=2),
         "type": "access"
     }
     return jwt.encode(payload, get_jwt_secret(), algorithm=JWT_ALGORITHM)
@@ -279,7 +279,7 @@ async def register(user: UserRegister, response: Response):
     access_token = create_access_token(str(result.inserted_id), email)
     refresh_token = create_refresh_token(str(result.inserted_id))
     
-    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=False, samesite="lax", max_age=900, path="/")
+    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=False, samesite="lax", max_age=7200, path="/")
     response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, secure=False, samesite="lax", max_age=604800, path="/")
     
     # Log activity
@@ -337,7 +337,7 @@ async def login(user: UserLogin, request: Request, response: Response):
     access_token = create_access_token(user_id, email)
     refresh_token = create_refresh_token(user_id)
     
-    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=False, samesite="lax", max_age=900, path="/")
+    response.set_cookie(key="access_token", value=access_token, httponly=True, secure=False, samesite="lax", max_age=7200, path="/")
     response.set_cookie(key="refresh_token", value=refresh_token, httponly=True, secure=False, samesite="lax", max_age=604800, path="/")
     
     return {
@@ -450,7 +450,7 @@ async def refresh_token(request: Request, response: Response):
             raise HTTPException(status_code=401, detail="User not found")
         
         access_token = create_access_token(payload["sub"], user["email"])
-        response.set_cookie(key="access_token", value=access_token, httponly=True, secure=False, samesite="lax", max_age=900, path="/")
+        response.set_cookie(key="access_token", value=access_token, httponly=True, secure=False, samesite="lax", max_age=7200, path="/")
         
         return {"message": "Token refreshed"}
     except jwt.ExpiredSignatureError:
